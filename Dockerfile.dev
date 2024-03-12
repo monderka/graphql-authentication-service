@@ -1,0 +1,23 @@
+FROM php:8.1-bullseye
+
+ENV COMPOSER_ALLOW_SUPERUSER=1
+
+RUN apt-get update && apt-get install -y redis-tools libonig-dev
+
+RUN docker-php-ext-install -j$(nproc) pdo_mysql \
+    && docker-php-ext-install -j$(nproc) bcmath \
+    && docker-php-ext-install -j$(nproc) mbstring
+
+
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+RUN mkdir -p temp
+RUN chmod 0777 temp
+RUN mkdir -p log
+RUN chmod 0777 log
+
+COPY . /app
+
+EXPOSE 8000
+
+CMD [ "php", "-S", "0.0.0.0:8000", "-t", "/app/www"]

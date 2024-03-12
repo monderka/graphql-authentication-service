@@ -1,0 +1,10 @@
+extensions:
+    redis: Contributte\Redis\DI\RedisExtension
+
+redis:
+    debug: %debugMode%
+    connection:
+        default:
+            uri: %redis.uri%
+            options: []
+            storage: true

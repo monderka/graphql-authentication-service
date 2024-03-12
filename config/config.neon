@@ -1,0 +1,37 @@
+includes:
+    - apitte.neon
+    - console.neon
+    - graphql.neon
+    - jwt.neon
+    - redis.neon
+    - cache.neon
+    - doctrine.neon
+
+search:
+    App:
+        in: %appDir%
+        implements:
+            -   Apitte\Core\UI\Controller\IController
+            -   Portiny\GraphQL\Contract\Field\QueryFieldInterface
+            -   Portiny\GraphQL\Contract\Mutation\MutationFieldInterface
+            -   App\Interfaces\GraphQLInputInterface
+            -   App\Interfaces\GraphQLTypeInterface
+            -   App\Interfaces\GraphQLScalarInterface
+            -   App\Interfaces\GraphQLEnumInterface
+            -   App\Interfaces\GraphQLResolverInterface
+            -   App\Interfaces\GraphQLColumnResolverInterface
+            -   App\Interfaces\ServiceInterface
+
+services:
+    - Nette\Security\Passwords
+
+decorator:
+    App\Services\IdentityProvider:
+        setup:
+            - setJwtIssuer(%jwt.issuer%)
+    App\GraphQL\Resolvers\QueryResolvers\AuthenticateResolver:
+        setup:
+            - setJwtIssuer(%jwt.issuer%)
+    App\GraphQL\Resolvers\QueryResolvers\RefreshTokenResolver:
+        setup:
+            - setJwtIssuer(%jwt.issuer%)

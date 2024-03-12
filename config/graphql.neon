@@ -1,0 +1,8 @@
+extensions:
+    graphql: Portiny\GraphQLNette\DI\GraphQLExtension
+
+graphql:
+    debug: %debugMode%
+    schemaCache:
+        enabled: false
+        cacheDir: %tempDir%/cache/graphql

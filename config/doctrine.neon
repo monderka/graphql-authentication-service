@@ -1,0 +1,59 @@
+extensions:
+    # Common
+    nettrine.annotations: Nettrine\Annotations\DI\AnnotationsExtension
+
+    # Dbal
+    nettrine.dbal: Nettrine\DBAL\DI\DbalExtension
+    nettrine.dbal.console: Nettrine\DBAL\DI\DbalConsoleExtension
+
+    # Cache
+    nettrine.cache: Nettrine\Cache\DI\CacheExtension
+
+    # Orm
+    nettrine.orm: Nettrine\ORM\DI\OrmExtension
+    nettrine.orm.cache: Nettrine\ORM\DI\OrmCacheExtension
+    nettrine.orm.console: Nettrine\ORM\DI\OrmConsoleExtension
+    nettrine.orm.attributes: Nettrine\ORM\DI\OrmAttributesExtension
+    nettrine.migrations: Nettrine\Migrations\DI\MigrationsExtension
+    nettrine.fixtures: Nettrine\Fixtures\DI\FixturesExtension
+
+nettrine.dbal:
+    debug:
+        panel: false
+        sourcePaths: [%appDir%]
+    connection:
+        host: %db.host%
+        driver: %db.driver%
+        dbname: %db.dbname%
+        user: %db.user%
+        password: %db.password%
+        charset:    utf8
+
+nettrine.orm:
+	configuration:
+		autoGenerateProxyClasses: %debugMode%
+
+nettrine.orm.attributes:
+  mapping:
+      App\Models\Entities: %appDir%/Models/Entities
+
+nettrine.orm.cache:
+
+nettrine.cache:
+    driver:
+        class:  Doctrine\Common\Cache\PredisCache
+
+nettrine.migrations:
+    table: doctrine_migrations
+    column: version
+    directory: %rootDir% . '/db/migrations'
+    namespace: Database\Migrations
+    versionsOrganization: null
+
+nettrine.fixtures:
+	paths:
+		- %rootDir% . '/db/fixtures'
+
+decorator:
+	Doctrine\Common\EventSubscriber:
+		tags: [nettrine.subscriber]
